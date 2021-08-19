@@ -26,14 +26,27 @@ body{
 .form-input{
     width: 300px;
     height: 35px;
-    border: 1px solid #808080;
+    border: 1px solid #808080; 
     border-radius: 10px;
     margin: 10px 0 0 0;
     padding: 0 0 0 5px;
 }
 
+.form-input:hover{
+    border: 2px solid #808080;
+}
+
 .form-input:focus{
-    border: 1px solid green;
+    outline: none;
+    border: 2px solid green;
+}
+
+.form-input:focus:invalid{
+    border: 2px solid red;
+}
+
+.form-input:valid{
+    border: 2px solid green;
 }
 
 .form-big{
@@ -51,9 +64,20 @@ body{
     padding: 10px 0 0 10px;
 }
 
+.form-input-big:focus{
+    outline: none;
+}
+
 .green-button{
     background-color: rgb(38, 153, 38);
     color: #fff;
+}
+
+.error{
+    font-size: 14px;
+    font-style: italic;
+    color: red;
+    margin-top: 5px;
 }
 
 @media(max-width: 450px){

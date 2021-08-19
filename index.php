@@ -1,8 +1,49 @@
 <?php 
-    if(isset($_POST['submit'])){
-        mail("bingshan1999@gmail.com", "My subject", "adasdasd");
+    $first_nameErr = $last_nameErr = $townErr = $countyErr = $phoneErr = "";
+    $error = False;
+    $first_name = $last_name = $email = $phone = $addr1 = $addr2 = $town = $postcode = $county = $country = $description = $file = "";
+    function check_name($var){
+        if (!preg_match("/^[a-zA-Z-' ]*$/",$var)) {
+            return False;
+        }else{
+            return True;
+        }
     }
-?>
+
+    function check_num($var){
+        if (!is_numeric($var)){
+            return False;
+        }else{
+            return True;
+        }
+    }
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $first_name = htmlspecialchars($_POST["first_name"]);
+        $last_name = htmlspecialchars($_POST["last_name"]);
+        $email = htmlspecialchars($_POST["email"]);
+        $phone = htmlspecialchars($_POST["phone"]);
+        $addr1 = htmlspecialchars($_POST["addr1"]);
+        $addr2 = htmlspecialchars($_POST["addr2"]);
+        $town = htmlspecialchars($_POST["town"]);
+        $postcode = htmlspecialchars($_POST["postcode"]);
+        $county = htmlspecialchars($_POST["county"]);
+        $country = htmlspecialchars($_POST["country"]);
+        $description = htmlspecialchars($_POST["description"]);
+        $file = $_POST["file"];
+
+        check_name($first_name) ? : ($first_nameErr = "Only letters and white space allowed" AND $error = True);
+        check_name($last_name) ? : ($last_nameErr = "Only letters and white space allowed" AND $error = True);
+        check_name($town) ? : ($townErr = "Only letters and white space allowed" AND $error = True);
+        check_name($county) ? : ($countyErr = "Only letters and white space allowed" AND $error = True);
+        check_num($phone) ? : ($phoneErr = "Only numeric digits allowed" AND $error = True);
+    
+        if(!$error){
+            //mail($email, "Confirmation of recieving the form", "message here");
+            echo "<script>alert('Form submitted successfully!')</script>";
+        }
+    }
+    
+?> 
 
 <!DOCTYPE html>
 <html>
@@ -15,47 +56,51 @@
         <link rel="stylesheet" href="index.css">
     </head>
     <body>
-    <form method="POST" action="">    
+    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">    
         <div class="form-container">        
             <div class="form">
                 <span>First Name</span><br>
-                <input type="text" class="form-input" name="first_name" required/>
+                <input type="text" class="form-input" name="first_name" value="<?php echo $first_name; ?>"required/>
+                <p class="error"><?php echo $first_nameErr; ?></p>
             </div>
             <div class="form">
                 <span>Last Name</span><br>
-                <input type="text" class="form-input" name="last_name" required/>
+                <input type="text" class="form-input" name="last_name" value="<?php echo $last_name; ?>" required/>
+                <p class="error"><?php echo $last_nameErr; ?></p>
             </div>
             <div class="form">
                 <span>Email address</span><br>
-                <input type="email" class="form-input" name="email" required/>
+                <input type="email" class="form-input" name="email" value="<?php echo $email; ?>" required/>
             </div>
             <div class="form">
                 <span>Telephone number</span><br>
-                <input type="text" class="form-input" name="tel" required/>
+                <input type="text" class="form-input" name="phone" value="<?php echo $phone; ?>" required/>
+                <p class="error"><?php echo $phoneErr; ?></p>
             </div>
             <div class="form">
                 <span>Address 1</span><br>
-                <input type="text" class="form-input" required/>
+                <input type="text" class="form-input" name="addr1" value="<?php echo $addr1; ?>" required/>
             </div>
             <div class="form">
                 <span>Address 2</span><br>
-                <input type="text" class="form-input" required/>
+                <input type="text" class="form-input" name="addr2" value="<?php echo $addr2; ?>" required/>
             </div>
             <div class="form">
                 <span>Town</span><br>
-                <input type="text" class="form-input" required/>
+                <input type="text" class="form-input" name="town" value="<?php echo $town; ?>" required/>
+                <p class="error"><?php echo $townErr; ?></p>
             </div>
             <div class="form">
                 <span>County</span><br>
-                <input type="text" class="form-input" required/>
+                <input type="text" class="form-input" name="county" value="<?php echo $county; ?>" required/>
+                <p class="error"><?php echo $countyErr; ?></p>
             </div>
             <div class="form">
                 <span>Postcode</span><br>
-                <input type="text" class="form-input" required/>
+                <input type="text" class="form-input" name="postcode" value="<?php echo $postcode; ?>" required/>
             </div>
             <div class="form">
                 <span>Country</span><br>
-                <!-- <input type="text" class="form-input"/> -->
                 <select id="country" name="country" class="form-input">
                     <option value="Afganistan">Afghanistan</option>
                     <option value="Albania">Albania</option>
@@ -307,18 +352,16 @@
             </div>
             <div class="form-big">
                 <span>Description</span><br>
-                <!-- <input type="text" class="form-input-big"/> -->
-                <textarea class="form-input-big"></textarea>
+                <textarea id="description" name="description" class="form-input-big" maxlength="500"><?php echo $description; ?></textarea>
             </div>
             <div class="form">
                 <span>You C.V</span><br><br>
                 <span>Select a file </span>
-                <input type="file" />
+                <input type="file" name="file" accept="application/pdf, .doc, .docx, .odf"/>
             </div>
             <div class="form-big">
-                <input type="submit" name="submit" class="form-input green-button" />
-            </form>
-        
+                <input type="submit" name="submit" class="form-input green-button"/>
+            </div>
         </div>
     </form>
     </body>
